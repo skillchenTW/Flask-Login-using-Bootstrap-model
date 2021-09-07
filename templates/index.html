@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form Using Bootstrap Modal using Python Flask jquery Ajax password hash and session</title>  
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container" style="width: 700px;">
+        <h3>Login Form Using Bootstrap Modal using Python Flask jquery Ajax password hash and session</h3>
+        <br/>
+        <p>hash: {{ hash }}</p>
+        <p>hash: {{check_hash}}</p>
+        <br/>
+        {% if session.logged_in %} 
+        <div align="center">
+            <h3>Welcome - {{ session.username }}</h3><br/>
+            <a href="/logout">Logout</a>
+        </div>
+        {% endif %}
+        <div align="center">
+            <a data-target="#myModal" role="button" class="btn btn-warning" data-toggle="modal">
+                <span class="glyphicon glyphicon-hand-up"> 登入(Login) </span>
+            </a>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                    <h4 class="modal-title">Login Form Using Bootstrap Modal using Python Flask jQuery Ajax password hash and session</h4>
+                </div>
+                <div class="modal-body">
+                    <label>Username</label>
+                    <input type="text" name="username" id="username" class="form-control"/>
+                    <br/>
+                    <label>Password</label>
+                    <input type="password" name="password" id="password" class="form-control">
+                    <br/>
+                    <button type="button" name="login-button" id="login-button" class="btn btn-warning">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Script Area-->
+    <script>
+        $(document).ready(function(){
+            $("#login-button").click(function(){
+                var username = $('#username').val();
+                var password = $('#password').val();
+                if (username != "" && password != "")
+                {
+                    $.ajax({
+                        url: "/action",
+                        method: "POST",
+                        data: {username:username, password:password},
+                        success: function(data){
+                            alert(data);
+                            if (data == 'No-data') {
+                                alert("Invalid Account or Password!!")
+                            }
+                            else
+                            {
+                                $('#loginModal').hide();
+                                location.reload();
+                            }
+                        }
+                    })
+                } else {
+                    alert("輸入錯誤: 欄位不可為空(Fields are required) !!")
+                }
+
+
+
+            });
+        });
+    </script>
+
+
+</body>
+</html>
